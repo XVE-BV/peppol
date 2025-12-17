@@ -17,71 +17,70 @@ src/
 ## Implementation Checklist
 
 ### Config (`config/peppol-gateway.php`)
-- [ ] API connection settings (base_url, timeout)
-- [ ] Authentication credentials (client_id, client_secret)
-- [ ] Swappable action classes
-- [ ] Model class overrides
+- [x] API connection settings (base_url, timeout)
+- [x] Authentication credentials (client_id, client_secret)
+- [x] Swappable action classes
 
 ### Support Classes (`src/Support/`)
-- [ ] `Config` helper class
-  - [ ] `getActionClass()` - resolve configurable actions
-  - [ ] Validation of configuration values
-  - [ ] Fail-fast on invalid config
+- [x] `Config` helper class
+  - [x] `getActionClass()` - resolve configurable actions
+  - [x] Validation of configuration values
+  - [x] Fail-fast on invalid config
+  - [x] `httpClient()` - configured HTTP client
 
 ### Actions (`src/Actions/`)
-- [ ] `HealthCheckAction` - `GET /api/system/health`
-- [ ] `LookupParticipantAction` - `POST /api/peppol/lookup`
-- [ ] `SendInvoiceAction` - `POST /api/invoices/json`
-- [ ] `SendCreditNoteAction` - `POST /api/credit-notes/json`
-- [ ] `GetInvoiceStatusAction` - `GET /api/invoices/{id}`
+- [x] `HealthCheckAction` - `GET /api/system/health`
+- [x] `LookupParticipantAction` - `POST /api/peppol/lookup`
+- [x] `SendInvoiceAction` - `POST /api/invoices/json`
+- [x] `SendCreditNoteAction` - `POST /api/credit-notes/json`
+- [x] `GetInvoiceStatusAction` - `GET /api/invoices/{id}`
 
 Each action:
-- [ ] Single `execute()` method
-- [ ] Type-hinted parameters and return types
-- [ ] Uses Config helper for HTTP client
-- [ ] Returns DTO or throws exception
+- [x] Single `execute()` method
+- [x] Type-hinted parameters and return types
+- [x] Uses Config helper for HTTP client
+- [x] Returns DTO or throws exception
 
 ### Exceptions (`src/Exceptions/`)
-- [ ] `PeppolGatewayException` (base)
-- [ ] `AuthenticationException`
-  - [ ] `::invalidCredentials()`
-  - [ ] `::missingCredentials()`
-- [ ] `ConnectionException`
-  - [ ] `::timeout()`
-  - [ ] `::unreachable()`
-- [ ] `ValidationException`
-  - [ ] `::fromResponse(array $errors)`
-- [ ] `InvoiceException`
-  - [ ] `::notFound(string $id)`
-  - [ ] `::sendFailed(string $reason)`
+- [x] `PeppolGatewayException` (base)
+- [x] `AuthenticationException`
+  - [x] `::invalidCredentials()`
+  - [x] `::missingCredentials()`
+- [x] `ConnectionException`
+  - [x] `::timeout()`
+  - [x] `::unreachable()`
+  - [x] `::missingBaseUrl()`
+- [x] `ValidationException`
+  - [x] `::fromResponse(array $errors)`
+- [x] `InvoiceException`
+  - [x] `::notFound(string $id)`
+  - [x] `::sendFailed(string $reason)`
 
 ### DTOs (`src/Support/`)
-- [ ] `HealthStatus` - health check response
-- [ ] `Participant` - lookup response
-- [ ] `InvoiceResult` - send invoice response
-- [ ] `InvoiceStatus` - status check response
+- [x] `HealthStatus` - health check response
+- [x] `Participant` - lookup response
+- [x] `InvoiceResult` - send invoice response
+- [x] `InvoiceStatus` - status check response
 
 ### Traits & Interfaces (`src/Models/Concerns/`)
-- [ ] `HasPeppolId` interface
-  - [ ] `getPeppolParticipantId(): ?string`
-  - [ ] `setPeppolParticipantId(string $id): void`
-- [ ] `InteractsWithPeppol` trait
-  - [ ] Default implementation of interface
+- [x] `HasPeppolId` interface
+  - [x] `getPeppolParticipantId(): ?string`
+  - [x] `setPeppolParticipantId(string $id): void`
+- [x] `InteractsWithPeppol` trait
+  - [x] Default implementation of interface
 
 ### Service Provider
-- [ ] Register config file
-- [ ] Bind actions to container
-- [ ] Register HTTP client singleton
+- [x] Register config file
+- [x] Bind actions to container
 
 ### Authentication
-- [ ] `X-Api-Client-Id` header (UUID)
-- [ ] `Authorization: Bearer {secret}` header
+- [x] `X-Api-Client-Id` header (UUID)
+- [x] `Authorization: Bearer {secret}` header
 
 ### Testing
-- [ ] `TestCase` with proper setup
-- [ ] Mock HTTP responses
-- [ ] Test each action
-- [ ] Architecture tests (no dd/dump/ray)
+- [x] `TestCase` with proper setup
+- [x] Test action container resolution
+- [x] Architecture tests (no dd/dump/ray)
 
 ## Out of Scope
 - Logic of saving when last was fetched

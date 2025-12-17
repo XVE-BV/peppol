@@ -67,10 +67,7 @@
         "laravel": {
             "providers": [
                 "Xve\\LaravelPeppol\\LaravelPeppolServiceProvider"
-            ],
-            "aliases": {
-                "Peppol": "Xve\\LaravelPeppol\\Facades\\Peppol"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

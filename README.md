@@ -43,7 +43,7 @@ php artisan vendor:publish --tag="peppol-gateway-config"
 ```php
 use Xve\LaravelPeppol\Actions\HealthCheckAction;
 
-$action = new HealthCheckAction();
+$action = app(HealthCheckAction::class);
 $health = $action->execute();
 
 $health->ok;        // true/false
@@ -55,7 +55,7 @@ $health->status;    // 200
 ```php
 use Xve\LaravelPeppol\Actions\LookupParticipantAction;
 
-$action = new LookupParticipantAction();
+$action = app(LookupParticipantAction::class);
 $participant = $action->execute('BE0123456789');
 
 $participant->participantId;  // "9925:BE0123456789"
@@ -67,7 +67,7 @@ $participant->capable;        // true/false
 ```php
 use Xve\LaravelPeppol\Actions\SendInvoiceAction;
 
-$action = new SendInvoiceAction();
+$action = app(SendInvoiceAction::class);
 $result = $action->execute([
     'type' => 'invoice',
     'id' => 'INV-2025-001',
@@ -98,7 +98,7 @@ $result->uuid;    // "550e8400-e29b-41d4-a716-446655440000"
 ```php
 use Xve\LaravelPeppol\Actions\SendCreditNoteAction;
 
-$action = new SendCreditNoteAction();
+$action = app(SendCreditNoteAction::class);
 $result = $action->execute([
     'type' => 'credit_note',
     'total' => -121.00,
@@ -111,7 +111,7 @@ $result = $action->execute([
 ```php
 use Xve\LaravelPeppol\Actions\GetInvoiceStatusAction;
 
-$action = new GetInvoiceStatusAction();
+$action = app(GetInvoiceStatusAction::class);
 $status = $action->execute('550e8400-e29b-41d4-a716-446655440000');
 
 $status->status;     // "delivered", "rejected", "failed", etc.
