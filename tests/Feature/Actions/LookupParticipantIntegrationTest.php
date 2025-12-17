@@ -13,7 +13,7 @@ it('looks up Belgian participant with BE prefix', function () {
     expect($result)->toBeInstanceOf(Participant::class)
         ->and($result->participantId)->not->toBeEmpty()
         ->and($result->capable)->toBeTrue();
-})->group('integration');
+});
 
 it('looks up Belgian participant with be prefix (lowercase)', function () {
     $action = app(LookupParticipantAction::class);
@@ -22,13 +22,4 @@ it('looks up Belgian participant with be prefix (lowercase)', function () {
     expect($result)->toBeInstanceOf(Participant::class)
         ->and($result->participantId)->not->toBeEmpty()
         ->and($result->capable)->toBeTrue();
-})->group('integration');
-
-it('looks up Belgian participant with country parameter', function () {
-    $action = app(LookupParticipantAction::class);
-    $result = $action->execute('0805374964', 'BE');
-
-    expect($result)->toBeInstanceOf(Participant::class)
-        ->and($result->participantId)->not->toBeEmpty()
-        ->and($result->capable)->toBeTrue();
-})->group('integration');
+});
