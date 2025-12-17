@@ -1,12 +1,14 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+declare(strict_types=1);
+
+namespace Xve\LaravelPeppol\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class PeppolCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'peppol';
 
     public $description = 'My command';
 
