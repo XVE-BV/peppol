@@ -1,38 +1,31 @@
-# Laravel Peppol
+# Laravel Peppol Gateway
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/xve/laravel-peppol.svg?style=flat-square)](https://packagist.org/packages/xve/laravel-peppol)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/xve/laravel-peppol/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/xve/laravel-peppol/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/xve/laravel-peppol/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/xve/laravel-peppol/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/xve/laravel-peppol.svg?style=flat-square)](https://packagist.org/packages/xve/laravel-peppol)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/xve/laravel-peppol-gateway.svg?style=flat-square)](https://packagist.org/packages/xve/laravel-peppol-gateway)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/xve/laravel-peppol-gateway/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/xve/laravel-peppol-gateway/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/xve/laravel-peppol-gateway.svg?style=flat-square)](https://packagist.org/packages/xve/laravel-peppol-gateway)
 
-Laravel package for Peppol e-invoicing and document exchange.
+Laravel client package for the Peppol Gateway API.
 
 ## Installation
 
-You can install the package via composer:
-
 ```bash
-composer require xve/laravel-peppol
+composer require xve/laravel-peppol-gateway
 ```
 
-You can publish and run the migrations with:
+Publish the config file:
 
 ```bash
-php artisan vendor:publish --tag="laravel-peppol-migrations"
-php artisan migrate
+php artisan vendor:publish --tag="peppol-gateway-config"
 ```
 
-You can publish the config file with:
+## Configuration
 
-```bash
-php artisan vendor:publish --tag="laravel-peppol-config"
-```
+Add to your `.env`:
 
-This is the contents of the published config file:
-
-```php
-return [
-];
+```env
+PEPPOL_GATEWAY_URL=https://your-gateway-url.com
+PEPPOL_GATEWAY_CLIENT_ID=your-client-id
+PEPPOL_GATEWAY_CLIENT_SECRET=your-client-secret
 ```
 
 ## Usage
@@ -40,7 +33,20 @@ return [
 ```php
 use Xve\LaravelPeppol\Facades\Peppol;
 
-// Usage examples will be added here
+// Health check
+$health = Peppol::health();
+
+// Lookup customer
+$participant = Peppol::lookup('BE0123456789');
+
+// Send invoice
+$result = Peppol::sendInvoice([...]);
+
+// Send credit note
+$result = Peppol::sendCreditNote([...]);
+
+// Check status
+$status = Peppol::status($uuid);
 ```
 
 ## Testing
@@ -48,23 +54,6 @@ use Xve\LaravelPeppol\Facades\Peppol;
 ```bash
 composer test
 ```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Jonas Vanderhaegen](https://github.com/xve)
-- [All Contributors](../../contributors)
 
 ## License
 

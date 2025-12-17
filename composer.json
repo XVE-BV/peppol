@@ -1,15 +1,15 @@
 {
-    "name": "xve/laravel-peppol",
-    "description": "Laravel package for Peppol e-invoicing and document exchange",
+    "name": "xve/laravel-peppol-gateway",
+    "description": "Laravel client for Peppol Gateway API",
     "keywords": [
         "xve",
         "laravel",
         "peppol",
+        "gateway",
         "e-invoicing",
-        "ubl",
-        "invoice"
+        "flowin"
     ],
-    "homepage": "https://github.com/xve/laravel-peppol",
+    "homepage": "https://github.com/xve/laravel-peppol-gateway",
     "license": "MIT",
     "authors": [
         {
