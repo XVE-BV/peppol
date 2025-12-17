@@ -8,6 +8,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Xve\LaravelPeppol\Exceptions\AuthenticationException;
 use Xve\LaravelPeppol\Exceptions\ConnectionException;
+use Xve\LaravelPeppol\Exceptions\InvalidActionClass;
 
 class Config
 {
@@ -49,9 +50,39 @@ class Config
         return (int) (config('peppol-gateway.timeout') ?? 30);
     }
 
-    public static function getActionClass(string $actionName): string
+    /**
+     * @template T
+     *
+     * @param  class-string<T>  $actionBaseClass
+     * @return class-string<T>
+     */
+    public static function getActionClass(string $actionName, string $actionBaseClass): string
     {
-        return config("peppol-gateway.actions.{$actionName}");
+        $actionClass = config("peppol-gateway.actions.{$actionName}") ?? $actionBaseClass;
+
+        self::ensureValidActionClass($actionName, $actionBaseClass, $actionClass);
+
+        return $actionClass;
+    }
+
+    /**
+     * @template T
+     *
+     * @param  class-string<T>  $actionBaseClass
+     * @return T
+     */
+    public static function getAction(string $actionName, string $actionBaseClass)
+    {
+        $actionClass = self::getActionClass($actionName, $actionBaseClass);
+
+        return new $actionClass;
+    }
+
+    protected static function ensureValidActionClass(string $actionName, string $actionBaseClass, string $actionClass): void
+    {
+        if (! is_a($actionClass, $actionBaseClass, true)) {
+            throw InvalidActionClass::make($actionName, $actionBaseClass, $actionClass);
+        }
     }
 
     public static function httpClient(): PendingRequest

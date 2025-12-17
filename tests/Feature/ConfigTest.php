@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Xve\LaravelPeppol\Actions\HealthCheckAction;
 use Xve\LaravelPeppol\Exceptions\AuthenticationException;
 use Xve\LaravelPeppol\Exceptions\ConnectionException;
+use Xve\LaravelPeppol\Exceptions\InvalidActionClass;
 use Xve\LaravelPeppol\Support\Config;
 
 it('returns base url from config', function () {
@@ -61,9 +63,28 @@ it('returns custom timeout from config', function () {
 });
 
 it('returns action class from config', function () {
-    expect(Config::getActionClass('health_check'))
-        ->toBe(\Xve\LaravelPeppol\Actions\HealthCheckAction::class);
+    expect(Config::getActionClass('health_check', HealthCheckAction::class))
+        ->toBe(HealthCheckAction::class);
 });
+
+it('returns action instance from config', function () {
+    $action = Config::getAction('health_check', HealthCheckAction::class);
+
+    expect($action)->toBeInstanceOf(HealthCheckAction::class);
+});
+
+it('falls back to base class when action not configured', function () {
+    config()->set('peppol-gateway.actions.custom_action', null);
+
+    expect(Config::getActionClass('custom_action', HealthCheckAction::class))
+        ->toBe(HealthCheckAction::class);
+});
+
+it('throws exception for invalid action class', function () {
+    config()->set('peppol-gateway.actions.health_check', \stdClass::class);
+
+    Config::getActionClass('health_check', HealthCheckAction::class);
+})->throws(InvalidActionClass::class);
 
 it('returns configured http client', function () {
     $client = Config::httpClient();
