@@ -2,6 +2,15 @@
 
 This package uses the **Action Pattern** (also known as Single Action Classes or Command Pattern). This document explains the design choice for developers unfamiliar with the pattern.
 
+## TL;DR - SWOT Analysis
+
+| | |
+|---|---|
+| **Strengths** | Single responsibility, easy to test, swappable via config, explicit dependencies, self-documenting folder structure |
+| **Weaknesses** | More files than service classes, slight overhead for simple operations, unfamiliar to some developers |
+| **Opportunities** | Custom logging/monitoring, per-tenant behavior, A/B testing implementations, easy mocking in tests |
+| **Threats** | Over-engineering for tiny projects, inconsistent usage if team doesn't follow pattern |
+
 ## What is an Action?
 
 An Action is a class with a single public method (`execute`) that performs one specific task. Instead of grouping related methods in a service class, each operation gets its own dedicated class.
