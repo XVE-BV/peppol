@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Xve\LaravelPeppol\Support;
 
-use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Facades\Http;
 use Xve\LaravelPeppol\Exceptions\AuthenticationException;
 use Xve\LaravelPeppol\Exceptions\ConnectionException;
 use Xve\LaravelPeppol\Exceptions\InvalidActionClass;
+use Xve\LaravelPeppol\Services\PeppolGatewayService;
 
 class Config
 {
@@ -75,7 +74,7 @@ class Config
     {
         $actionClass = self::getActionClass($actionName, $actionBaseClass);
 
-        return new $actionClass;
+        return app($actionClass);
     }
 
     protected static function ensureValidActionClass(string $actionName, string $actionBaseClass, string $actionClass): void
@@ -85,15 +84,8 @@ class Config
         }
     }
 
-    public static function httpClient(): PendingRequest
+    public static function service(): PeppolGatewayService
     {
-        return Http::baseUrl(self::getBaseUrl())
-            ->timeout(self::getTimeout())
-            ->withHeaders([
-                'X-Api-Client-Id' => self::getClientId(),
-                'Authorization' => 'Bearer '.self::getClientSecret(),
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ]);
+        return app(PeppolGatewayService::class);
     }
 }

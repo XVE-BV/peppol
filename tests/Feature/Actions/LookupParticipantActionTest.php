@@ -25,7 +25,7 @@ it('looks up participant successfully', function () {
         ]),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $result = $action->execute('BE0123456789');
 
     expect($result)->toBeInstanceOf(Participant::class)
@@ -42,7 +42,7 @@ it('sends vat in request body', function () {
         ]),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('BE0123456789');
 
     Http::assertSent(function ($request) {
@@ -59,7 +59,7 @@ it('includes country when provided', function () {
         ]),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('0123456789', 'BE');
 
     Http::assertSent(function ($request) {
@@ -77,7 +77,7 @@ it('includes force refresh when true', function () {
         ]),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('BE0123456789', forceRefresh: true);
 
     Http::assertSent(function ($request) {
@@ -90,7 +90,7 @@ it('throws authentication exception on 401', function () {
         'api.example.com/api/peppol/lookup' => Http::response(['message' => 'Unauthorized'], 401),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('BE0123456789');
 })->throws(AuthenticationException::class, 'Invalid API credentials');
 
@@ -102,13 +102,13 @@ it('throws validation exception on 422', function () {
         ], 422),
     ]);
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('invalid');
 })->throws(ValidationException::class);
 
 it('throws connection exception on network failure', function () {
     Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Timeout'));
 
-    $action = new LookupParticipantAction;
+    $action = app(LookupParticipantAction::class);
     $action->execute('BE0123456789');
 })->throws(ConnectionException::class);

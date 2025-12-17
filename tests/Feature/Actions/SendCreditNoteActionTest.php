@@ -22,7 +22,7 @@ it('sends credit note successfully', function () {
         ], 202),
     ]);
 
-    $action = new SendCreditNoteAction;
+    $action = app(SendCreditNoteAction::class);
     $result = $action->execute([
         'type' => 'credit_note',
         'id' => 'CN-001',
@@ -44,7 +44,7 @@ it('sends credit note data to correct endpoint', function () {
         ], 202),
     ]);
 
-    $action = new SendCreditNoteAction;
+    $action = app(SendCreditNoteAction::class);
     $action->execute([
         'type' => 'credit_note',
         'total' => -121.00,
@@ -63,7 +63,7 @@ it('throws authentication exception on 401', function () {
         'api.example.com/api/credit-notes/json' => Http::response(['message' => 'Unauthorized'], 401),
     ]);
 
-    $action = new SendCreditNoteAction;
+    $action = app(SendCreditNoteAction::class);
     $action->execute(['type' => 'credit_note', 'total' => -100, 'currency' => 'EUR']);
 })->throws(AuthenticationException::class);
 
@@ -75,6 +75,6 @@ it('throws validation exception on 422', function () {
         ], 422),
     ]);
 
-    $action = new SendCreditNoteAction;
+    $action = app(SendCreditNoteAction::class);
     $action->execute(['type' => 'credit_note', 'total' => 100, 'currency' => 'EUR']);
 })->throws(ValidationException::class);

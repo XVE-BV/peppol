@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace Xve\LaravelPeppol\Actions;
 
 use Xve\LaravelPeppol\Events\HealthChecked;
-use Xve\LaravelPeppol\Exceptions\ConnectionException;
-use Xve\LaravelPeppol\Support\Config;
+use Xve\LaravelPeppol\Services\PeppolGatewayService;
 use Xve\LaravelPeppol\Support\HealthStatus;
 
 class HealthCheckAction
 {
+    public function __construct(
+        protected PeppolGatewayService $service,
+    ) {}
+
     public function execute(): HealthStatus
     {
-        try {
-            $response = Config::httpClient()->get('/api/system/health');
+        $response = $this->service->healthCheck();
 
-            $status = HealthStatus::fromResponse($response->json());
+        $status = HealthStatus::fromResponse($response);
 
-            HealthChecked::dispatch($status);
+        HealthChecked::dispatch($status);
 
-            return $status;
-        } catch (\Illuminate\Http\Client\ConnectionException $e) {
-            throw ConnectionException::unreachable();
-        }
+        return $status;
     }
 }

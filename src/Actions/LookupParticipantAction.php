@@ -5,47 +5,26 @@ declare(strict_types=1);
 namespace Xve\LaravelPeppol\Actions;
 
 use Xve\LaravelPeppol\Events\ParticipantLookedUp;
-use Xve\LaravelPeppol\Exceptions\AuthenticationException;
-use Xve\LaravelPeppol\Exceptions\ConnectionException;
-use Xve\LaravelPeppol\Exceptions\ValidationException;
-use Xve\LaravelPeppol\Support\Config;
+use Xve\LaravelPeppol\Services\PeppolGatewayService;
 use Xve\LaravelPeppol\Support\Participant;
 
 class LookupParticipantAction
 {
+    public function __construct(
+        protected PeppolGatewayService $service,
+    ) {}
+
     public function execute(
         string $vat,
         ?string $country = null,
         bool $forceRefresh = false,
     ): Participant {
-        try {
-            $payload = ['vat' => $vat];
+        $response = $this->service->lookupParticipant($vat, $country, $forceRefresh);
 
-            if ($country !== null) {
-                $payload['country'] = $country;
-            }
+        $participant = Participant::fromResponse($response);
 
-            if ($forceRefresh) {
-                $payload['force_refresh'] = true;
-            }
+        ParticipantLookedUp::dispatch($vat, $participant);
 
-            $response = Config::httpClient()->post('/api/peppol/lookup', $payload);
-
-            if ($response->status() === 401) {
-                throw AuthenticationException::invalidCredentials();
-            }
-
-            if ($response->status() === 422) {
-                throw ValidationException::fromResponse($response->json('errors', []));
-            }
-
-            $participant = Participant::fromResponse($response->json());
-
-            ParticipantLookedUp::dispatch($vat, $participant);
-
-            return $participant;
-        } catch (\Illuminate\Http\Client\ConnectionException $e) {
-            throw ConnectionException::unreachable();
-        }
+        return $participant;
     }
 }

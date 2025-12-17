@@ -6,11 +6,8 @@ namespace Xve\LaravelPeppol;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Xve\LaravelPeppol\Actions\GetInvoiceStatusAction;
-use Xve\LaravelPeppol\Actions\HealthCheckAction;
-use Xve\LaravelPeppol\Actions\LookupParticipantAction;
-use Xve\LaravelPeppol\Actions\SendCreditNoteAction;
-use Xve\LaravelPeppol\Actions\SendInvoiceAction;
+use Xve\LaravelPeppol\Services\PeppolGatewayService;
+use Xve\LaravelPeppol\Support\Config;
 
 class LaravelPeppolServiceProvider extends PackageServiceProvider
 {
@@ -23,10 +20,13 @@ class LaravelPeppolServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->bind(HealthCheckAction::class, fn () => new HealthCheckAction);
-        $this->app->bind(LookupParticipantAction::class, fn () => new LookupParticipantAction);
-        $this->app->bind(SendInvoiceAction::class, fn () => new SendInvoiceAction);
-        $this->app->bind(SendCreditNoteAction::class, fn () => new SendCreditNoteAction);
-        $this->app->bind(GetInvoiceStatusAction::class, fn () => new GetInvoiceStatusAction);
+        $this->app->singleton(PeppolGatewayService::class, function () {
+            return new PeppolGatewayService(
+                baseUrl: Config::getBaseUrl(),
+                clientId: Config::getClientId(),
+                clientSecret: Config::getClientSecret(),
+                timeout: Config::getTimeout(),
+            );
+        });
     }
 }

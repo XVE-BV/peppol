@@ -6,6 +6,7 @@ use Xve\LaravelPeppol\Actions\HealthCheckAction;
 use Xve\LaravelPeppol\Exceptions\AuthenticationException;
 use Xve\LaravelPeppol\Exceptions\ConnectionException;
 use Xve\LaravelPeppol\Exceptions\InvalidActionClass;
+use Xve\LaravelPeppol\Services\PeppolGatewayService;
 use Xve\LaravelPeppol\Support\Config;
 
 it('returns base url from config', function () {
@@ -86,8 +87,8 @@ it('throws exception for invalid action class', function () {
     Config::getActionClass('health_check', HealthCheckAction::class);
 })->throws(InvalidActionClass::class);
 
-it('returns configured http client', function () {
-    $client = Config::httpClient();
+it('returns service instance', function () {
+    $service = Config::service();
 
-    expect($client)->toBeInstanceOf(\Illuminate\Http\Client\PendingRequest::class);
+    expect($service)->toBeInstanceOf(PeppolGatewayService::class);
 });

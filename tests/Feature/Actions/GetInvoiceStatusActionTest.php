@@ -31,7 +31,7 @@ it('gets invoice status successfully', function () {
         ]),
     ]);
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $result = $action->execute('550e8400-e29b-41d4-a716-446655440000');
 
     expect($result)->toBeInstanceOf(InvoiceStatus::class)
@@ -52,7 +52,7 @@ it('gets invoice status with numeric id', function () {
         ]),
     ]);
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $result = $action->execute('123');
 
     expect($result->id)->toBe(123)
@@ -66,7 +66,7 @@ it('throws invoice exception on 404', function () {
         ], 404),
     ]);
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $action->execute('nonexistent');
 })->throws(InvoiceException::class, "Invoice with ID 'nonexistent' was not found");
 
@@ -75,14 +75,14 @@ it('throws authentication exception on 401', function () {
         'api.example.com/api/invoices/123' => Http::response(['message' => 'Unauthorized'], 401),
     ]);
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $action->execute('123');
 })->throws(AuthenticationException::class);
 
 it('throws connection exception on network failure', function () {
     Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Timeout'));
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $action->execute('123');
 })->throws(ConnectionException::class);
 
@@ -98,7 +98,7 @@ it('handles different invoice statuses', function (string $status) {
         ]),
     ]);
 
-    $action = new GetInvoiceStatusAction;
+    $action = app(GetInvoiceStatusAction::class);
     $result = $action->execute('123');
 
     expect($result->status)->toBe($status);

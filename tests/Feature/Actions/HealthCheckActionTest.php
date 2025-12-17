@@ -23,7 +23,7 @@ it('executes health check successfully', function () {
         ]),
     ]);
 
-    $action = new HealthCheckAction;
+    $action = app(HealthCheckAction::class);
     $result = $action->execute();
 
     expect($result)->toBeInstanceOf(HealthStatus::class)
@@ -41,7 +41,7 @@ it('returns unhealthy status', function () {
         ], 502),
     ]);
 
-    $action = new HealthCheckAction;
+    $action = app(HealthCheckAction::class);
     $result = $action->execute();
 
     expect($result->ok)->toBeFalse()
@@ -51,7 +51,7 @@ it('returns unhealthy status', function () {
 it('throws connection exception on network failure', function () {
     Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Connection refused'));
 
-    $action = new HealthCheckAction;
+    $action = app(HealthCheckAction::class);
     $action->execute();
 })->throws(ConnectionException::class, 'Could not connect to Peppol Gateway');
 
@@ -60,7 +60,7 @@ it('sends correct headers', function () {
         'api.example.com/api/system/health' => Http::response(['ok' => true, 'status' => 200]),
     ]);
 
-    $action = new HealthCheckAction;
+    $action = app(HealthCheckAction::class);
     $action->execute();
 
     Http::assertSent(function ($request) {

@@ -23,7 +23,7 @@ it('sends invoice successfully', function () {
         ], 202),
     ]);
 
-    $action = new SendInvoiceAction;
+    $action = app(SendInvoiceAction::class);
     $result = $action->execute([
         'type' => 'invoice',
         'id' => 'INV-001',
@@ -56,7 +56,7 @@ it('sends invoice data in request body', function () {
         ],
     ];
 
-    $action = new SendInvoiceAction;
+    $action = app(SendInvoiceAction::class);
     $action->execute($invoiceData);
 
     Http::assertSent(function ($request) {
@@ -72,7 +72,7 @@ it('throws authentication exception on 401', function () {
         'api.example.com/api/invoices/json' => Http::response(['message' => 'Unauthorized'], 401),
     ]);
 
-    $action = new SendInvoiceAction;
+    $action = app(SendInvoiceAction::class);
     $action->execute(['type' => 'invoice', 'total' => 100, 'currency' => 'EUR']);
 })->throws(AuthenticationException::class);
 
@@ -84,7 +84,7 @@ it('throws validation exception on 422', function () {
         ], 422),
     ]);
 
-    $action = new SendInvoiceAction;
+    $action = app(SendInvoiceAction::class);
     $action->execute([]);
 })->throws(ValidationException::class);
 
@@ -95,6 +95,6 @@ it('throws invoice exception on other failures', function () {
         ], 500),
     ]);
 
-    $action = new SendInvoiceAction;
+    $action = app(SendInvoiceAction::class);
     $action->execute(['type' => 'invoice', 'total' => 100, 'currency' => 'EUR']);
 })->throws(InvoiceException::class, 'Failed to send invoice');
