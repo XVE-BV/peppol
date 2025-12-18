@@ -39,7 +39,10 @@ class PeppolGatewayService
 
     public function lookupParticipant(string $vat, ?string $country = null, bool $forceRefresh = false): array
     {
-        $payload = ['vat' => $vat];
+        // Normalize VAT by removing dots, spaces, and dashes
+        $normalizedVat = preg_replace('/[\s.\-]/', '', $vat);
+
+        $payload = ['vat' => $normalizedVat];
 
         if ($country !== null) {
             $payload['country'] = $country;

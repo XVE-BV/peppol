@@ -23,3 +23,22 @@ it('looks up Belgian participant with be prefix (lowercase)', function () {
         ->and($result->participantId)->not->toBeEmpty()
         ->and($result->capable)->toBeTrue();
 });
+
+it('looks up Belgian participant with dots in VAT number', function () {
+    $action = app(LookupParticipantAction::class);
+    $result = $action->execute('BE0805.374.964');
+
+    expect($result)->toBeInstanceOf(Participant::class)
+        ->and($result->participantId)->not->toBeEmpty()
+        ->and($result->capable)->toBeTrue();
+});
+
+it('looks up Belgian participant with dots and lowercase prefix', function () {
+    $action = app(LookupParticipantAction::class);
+    $result = $action->execute('be0805.374.964');
+
+    expect($result)->toBeInstanceOf(Participant::class)
+        ->and($result->participantId)->not->toBeEmpty()
+        ->and($result->capable)->toBeTrue();
+});
+
