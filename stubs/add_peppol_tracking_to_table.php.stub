@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('{{table}}', function (Blueprint $table) {
-            $table->string('peppol_uuid')->nullable()->after('{{after_column}}');
+        Schema::table('{{ table }}', function (Blueprint $table) {
+            $table->string('peppol_uuid')->nullable()->after('{{ after_column }}');
             $table->string('peppol_status')->nullable()->after('peppol_uuid');
             $table->timestamp('peppol_sent_at')->nullable()->after('peppol_status');
             $table->timestamp('peppol_status_updated_at')->nullable()->after('peppol_sent_at');
@@ -19,7 +19,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('{{table}}', function (Blueprint $table) {
+        Schema::table('{{ table }}', function (Blueprint $table) {
             $table->dropColumn([
                 'peppol_uuid',
                 'peppol_status',

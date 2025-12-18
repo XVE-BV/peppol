@@ -58,6 +58,21 @@ Publish the config file (optional):
 php artisan vendor:publish --tag="peppol-gateway-config"
 ```
 
+## Stubs
+
+Publish the migration stubs (optional):
+
+```bash
+php artisan vendor:publish --tag="peppol-gateway-stubs"
+```
+
+This will publish the following stubs to `stubs/peppol-gateway/`:
+
+- `add_peppol_fields_to_table.php.stub` - Migration for adding Peppol participant fields to a table
+- `add_peppol_tracking_to_table.php.stub` - Migration for adding Peppol document tracking fields to a table
+
+Use these stubs as templates for your own migrations. Replace `{{ table }}` and `{{ after_column }}` placeholders with your values.
+
 ## Testing
 
 ```bash
