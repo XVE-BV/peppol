@@ -17,7 +17,7 @@ class GetInvoiceStatusAction
 
     public function execute(string $id): InvoiceStatus
     {
-        $response = $this->service->getInvoice($id);
+        $response = $this->service->getInvoiceStatus($id);
 
         if (($response['_status'] ?? null) === 404) {
             throw InvoiceException::notFound($id);

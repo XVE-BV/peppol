@@ -17,7 +17,7 @@ beforeEach(function () {
 
 it('gets invoice status successfully', function () {
     Http::fake([
-        'api.example.com/api/invoices/550e8400-e29b-41d4-a716-446655440000' => Http::response([
+        'api.example.com/api/invoices/550e8400-e29b-41d4-a716-446655440000/status' => Http::response([
             'invoice' => [
                 'id' => 1,
                 'uuid' => '550e8400-e29b-41d4-a716-446655440000',
@@ -42,7 +42,7 @@ it('gets invoice status successfully', function () {
 
 it('gets invoice status with numeric id', function () {
     Http::fake([
-        'api.example.com/api/invoices/123' => Http::response([
+        'api.example.com/api/invoices/123/status' => Http::response([
             'invoice' => [
                 'id' => 123,
                 'uuid' => '550e8400-e29b-41d4-a716-446655440000',
@@ -61,7 +61,7 @@ it('gets invoice status with numeric id', function () {
 
 it('throws invoice exception on 404', function () {
     Http::fake([
-        'api.example.com/api/invoices/nonexistent' => Http::response([
+        'api.example.com/api/invoices/nonexistent/status' => Http::response([
             'status' => 'not_found',
         ], 404),
     ]);
@@ -72,7 +72,7 @@ it('throws invoice exception on 404', function () {
 
 it('throws authentication exception on 401', function () {
     Http::fake([
-        'api.example.com/api/invoices/123' => Http::response(['message' => 'Unauthorized'], 401),
+        'api.example.com/api/invoices/123/status' => Http::response(['message' => 'Unauthorized'], 401),
     ]);
 
     $action = app(GetInvoiceStatusAction::class);
@@ -88,7 +88,7 @@ it('throws connection exception on network failure', function () {
 
 it('handles different invoice statuses', function (string $status) {
     Http::fake([
-        'api.example.com/api/invoices/123' => Http::response([
+        'api.example.com/api/invoices/123/status' => Http::response([
             'invoice' => [
                 'id' => 123,
                 'uuid' => '550e8400-e29b-41d4-a716-446655440000',
