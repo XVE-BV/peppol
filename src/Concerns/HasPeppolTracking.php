@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Xve\LaravelPeppol\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  *
  * @property string|null $peppol_uuid
  * @property string|null $peppol_status
- * @property \Illuminate\Support\Carbon|null $peppol_sent_at
- * @property \Illuminate\Support\Carbon|null $peppol_status_updated_at
+ * @property Carbon|null $peppol_sent_at
+ * @property Carbon|null $peppol_status_updated_at
  * @property string|null $peppol_error
  */
 trait HasPeppolTracking

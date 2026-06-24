@@ -122,7 +122,7 @@ it('throws validation exception on 422', function (): void {
 })->throws(ValidationException::class);
 
 it('throws connection exception on network failure', function (): void {
-    Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Timeout'));
+    Http::fake(fn () => throw new Illuminate\Http\Client\ConnectionException('Timeout'));
 
     $action = app(LookupParticipantAction::class);
     $action->execute('BE0123456789');

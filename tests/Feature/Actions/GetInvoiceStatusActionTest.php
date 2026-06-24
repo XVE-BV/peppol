@@ -80,7 +80,7 @@ it('throws authentication exception on 401', function (): void {
 })->throws(AuthenticationException::class);
 
 it('throws connection exception on network failure', function (): void {
-    Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Timeout'));
+    Http::fake(fn () => throw new Illuminate\Http\Client\ConnectionException('Timeout'));
 
     $action = app(GetInvoiceStatusAction::class);
     $action->execute('123');

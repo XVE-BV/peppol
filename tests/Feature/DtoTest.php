@@ -149,4 +149,53 @@ describe('InvoiceStatus', function (): void {
         expect($status->type)->toBe('credit_note')
             ->and($status->status)->toBe('rejected');
     });
+
+    it('maps transmission detail fields from snake_case keys', function (): void {
+        $data = [
+            'invoice' => [
+                'id' => 1,
+                'uuid' => '550e8400-e29b-41d4-a716-446655440000',
+                'type' => 'invoice',
+                'status' => 'delivered',
+                'invoice_number' => 'INV-2025-001',
+                'buyer_peppol_id' => '0208:0805374964',
+                'buyer_name' => 'Acme Corp',
+                'transmission_id' => 'TRANS-ABC123',
+                'format' => 'BIS3',
+                'submitted_at' => '2025-01-15T10:00:00Z',
+                'sent_at' => '2025-01-15T10:01:00Z',
+                'acknowledged_at' => '2025-01-15T10:02:00Z',
+                'delivered_at' => '2025-01-15T10:03:00Z',
+                'errors' => [
+                    ['code' => 'ERR_001', 'message' => 'Delivery failed'],
+                ],
+            ],
+        ];
+
+        $status = InvoiceStatus::fromResponse($data);
+
+        expect($status->invoiceNumber)->toBe('INV-2025-001')
+            ->and($status->buyerPeppolId)->toBe('0208:0805374964')
+            ->and($status->buyerName)->toBe('Acme Corp')
+            ->and($status->transmissionId)->toBe('TRANS-ABC123')
+            ->and($status->format)->toBe('BIS3')
+            ->and($status->submittedAt)->toBe('2025-01-15T10:00:00Z')
+            ->and($status->sentAt)->toBe('2025-01-15T10:01:00Z')
+            ->and($status->acknowledgedAt)->toBe('2025-01-15T10:02:00Z')
+            ->and($status->deliveredAt)->toBe('2025-01-15T10:03:00Z')
+            ->and($status->errors)->toBe([['code' => 'ERR_001', 'message' => 'Delivery failed']]);
+    });
+
+    it('defaults errors to empty array when key absent', function (): void {
+        $data = [
+            'id' => 1,
+            'uuid' => '550e8400-e29b-41d4-a716-446655440000',
+            'type' => 'invoice',
+            'status' => 'delivered',
+        ];
+
+        $status = InvoiceStatus::fromResponse($data);
+
+        expect($status->errors)->toBe([]);
+    });
 });

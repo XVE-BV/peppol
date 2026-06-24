@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-peppol-gateway` will be documented in this file.
 
+## v1.2.0 - 2026-06-24
+
+### Added
+
+- Transmission-detail fields on the `InvoiceStatus` DTO, mapped from the gateway's snake_case status payload: `invoiceNumber`, `buyerPeppolId`, `buyerName`, `transmissionId`, `format`, `submittedAt`, `sentAt`, `acknowledgedAt`, `deliveredAt`, and `errors`. Additive — existing fields (including `technicalStatus`) are unchanged.
+
 ## v1.0.0 - Unreleased
 
 ### Added

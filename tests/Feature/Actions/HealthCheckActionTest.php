@@ -49,7 +49,7 @@ it('returns unhealthy status', function (): void {
 });
 
 it('throws connection exception on network failure', function (): void {
-    Http::fake(fn () => throw new \Illuminate\Http\Client\ConnectionException('Connection refused'));
+    Http::fake(fn () => throw new Illuminate\Http\Client\ConnectionException('Connection refused'));
 
     $action = app(HealthCheckAction::class);
     $action->execute();

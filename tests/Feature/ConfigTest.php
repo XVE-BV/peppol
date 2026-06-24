@@ -82,7 +82,7 @@ it('falls back to base class when action not configured', function (): void {
 });
 
 it('throws exception for invalid action class', function (): void {
-    config()->set('peppol-gateway.actions.health_check', \stdClass::class);
+    config()->set('peppol-gateway.actions.health_check', stdClass::class);
 
     Config::getActionClass('health_check', HealthCheckAction::class);
 })->throws(InvalidActionClass::class);

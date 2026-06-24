@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Xve\LaravelPeppol\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  *
  * @property string|null $peppol_id
  * @property string|null $peppol_custom_set_id
- * @property \Illuminate\Support\Carbon|null $peppol_fetched_at
+ * @property Carbon|null $peppol_fetched_at
  * @property bool $use_peppol
  */
 trait InteractsWithPeppol

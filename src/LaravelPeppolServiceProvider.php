@@ -20,7 +20,7 @@ class LaravelPeppolServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(PeppolGatewayService::class, fn (): \Xve\LaravelPeppol\Services\PeppolGatewayService => new PeppolGatewayService(
+        $this->app->singleton(PeppolGatewayService::class, fn (): PeppolGatewayService => new PeppolGatewayService(
             baseUrl: Config::getBaseUrl(),
             clientId: Config::getClientId(),
             clientSecret: Config::getClientSecret(),
