@@ -34,14 +34,11 @@ testbench.yaml
 # Claude Code
 /.claude
 
-# Claude / GitNexus
-.gitnexus
+# Claude
 .mcp.json
 .claude/settings.local.json
 .DS_Store
 
-# graphify knowledge graph output (local only)
-graphify-out/
-
 # msr-mcp git history index (local only)
 .msr/
+.skybox
