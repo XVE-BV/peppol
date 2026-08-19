@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-peppol-gateway` will be documented in this file.
 
+## v1.3.0
+
+### Added
+
+- `ValidateVatCombinationAction` and the `VatValidationResult` value object, reachable as `PeppolGatewayService::validateVatCombination()`. Asks the gateway which of a set of VAT combination strings are still unmapped for the calling client, so a caller can block a send before the gateway rejects it. Additive.
+
 ## v1.2.0 - 2026-06-24
 
 ### Added

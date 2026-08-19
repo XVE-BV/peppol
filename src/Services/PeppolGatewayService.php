@@ -65,6 +65,11 @@ class PeppolGatewayService
         return $this->post('/api/credit-notes/json', $data);
     }
 
+    public function validateVatCombination(array $combinations): array
+    {
+        return $this->post('/api/vat/validate-combination', ['combinations' => $combinations]);
+    }
+
     public function getInvoiceStatus(string $id): array
     {
         return $this->get(sprintf('/api/invoices/%s/status', $id));
