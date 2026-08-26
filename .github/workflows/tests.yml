@@ -118,7 +118,7 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: Cache PHPStan results
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .phpstan.cache
           key: phpstan-${{ hashFiles('src/**/*.php') }}
